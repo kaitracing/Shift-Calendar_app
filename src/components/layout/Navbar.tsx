@@ -1,17 +1,16 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { UserRole, Department, DEPARTMENT_LABELS } from '@/types/database.types';
 import {
-  Flag,
   Calendar,
   Clock,
   MapPin,
   Shield,
   LogOut,
-  User as UserIcon,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -23,6 +22,7 @@ interface NavbarProps {
     full_name: string;
     student_id: string | null;
     department: Department;
+    sub_departments?: Department[];
     role: UserRole;
   } | null;
 }
@@ -39,7 +39,7 @@ export default function Navbar({ user, profile }: NavbarProps) {
   };
 
   const navItems = [
-    { label: 'ホーム', href: '/', icon: Flag },
+    { label: 'ホーム', href: '/', icon: Clock },
     { label: 'シフト提出', href: '/shifts', icon: Clock },
     { label: 'GPS打刻', href: '/checkin', icon: MapPin },
     { label: 'カレンダー', href: '/calendar', icon: Calendar },
@@ -75,11 +75,15 @@ export default function Navbar({ user, profile }: NavbarProps) {
     <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800 text-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Brand Logo */}
+          {/* Brand Logo with KAIT Racing Official Logo */}
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-xl bg-rose-600 flex items-center justify-center text-white shadow-md shadow-rose-600/30 group-hover:scale-105 transition">
-                <Flag className="w-5 h-5" />
+              <div className="relative w-11 h-11 rounded-xl overflow-hidden border border-slate-700 shadow-md group-hover:scale-105 transition bg-black flex items-center justify-center">
+                <img
+                  src="/logo.jpg"
+                  alt="KAIT Racing"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div className="hidden sm:block">
                 <span className="text-lg font-black tracking-wider text-white">
@@ -138,10 +142,15 @@ export default function Navbar({ user, profile }: NavbarProps) {
                   </span>
                   {getRoleBadge(profile.role)}
                 </div>
-                <span className="text-xs text-slate-400">
-                  {DEPARTMENT_LABELS[profile.department]}
+                <div className="text-xs text-slate-400">
+                  <span className="text-slate-300 font-medium">{DEPARTMENT_LABELS[profile.department]}</span>
+                  {profile.sub_departments && profile.sub_departments.length > 0 && (
+                    <span className="text-slate-400 text-[11px] ml-1">
+                      (兼: {profile.sub_departments.map((d) => DEPARTMENT_LABELS[d]).join(', ')})
+                    </span>
+                  )}
                   {profile.student_id ? ` (${profile.student_id})` : ''}
-                </span>
+                </div>
               </div>
             )}
 

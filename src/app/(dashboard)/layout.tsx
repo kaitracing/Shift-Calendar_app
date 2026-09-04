@@ -19,7 +19,7 @@ export default async function DashboardLayout({
   // プロフィール取得
   const { data: profileData } = await supabase
     .from('profiles')
-    .select('full_name, student_id, department, role, is_banned')
+    .select('full_name, student_id, department, sub_departments, role, is_banned')
     .eq('id', user.id)
     .single();
 
@@ -27,6 +27,7 @@ export default async function DashboardLayout({
     full_name: string;
     student_id: string | null;
     department: any;
+    sub_departments?: any[];
     role: any;
     is_banned: boolean;
   } | null;

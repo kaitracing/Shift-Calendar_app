@@ -31,6 +31,7 @@ export interface Database {
           full_name: string;
           student_id: string | null;
           department: Department;
+          sub_departments: Department[];
           role: UserRole;
           is_banned: boolean;
           created_at: string;
@@ -42,6 +43,7 @@ export interface Database {
           full_name: string;
           student_id?: string | null;
           department?: Department;
+          sub_departments?: Department[];
           role?: UserRole;
           is_banned?: boolean;
           created_at?: string;
@@ -53,6 +55,7 @@ export interface Database {
           full_name?: string;
           student_id?: string | null;
           department?: Department;
+          sub_departments?: Department[];
           role?: UserRole;
           is_banned?: boolean;
           created_at?: string;

@@ -65,8 +65,12 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-8 shadow-2xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-rose-600/20 text-rose-500 border border-rose-500/30 mb-3">
-            <Flag className="w-8 h-8" />
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl overflow-hidden border border-slate-700 bg-black shadow-lg mb-3">
+            <img
+              src="/logo.jpg"
+              alt="KAIT Racing Logo"
+              className="w-full h-full object-contain p-1"
+            />
           </div>
           <h1 className="text-2xl font-black tracking-wider text-white">
             KAIT Racing

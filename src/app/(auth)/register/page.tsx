@@ -11,13 +11,22 @@ export default function RegisterPage() {
   const router = useRouter();
   const [fullName, setFullName] = useState('');
   const [studentId, setStudentId] = useState('');
-  const [department, setDepartment] = useState<Department>('mechanical');
+  const [mainDepartment, setMainDepartment] = useState<Department>('mechanical');
+  const [subDepartments, setSubDepartments] = useState<Department[]>([]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const handleToggleSubDepartment = (dept: Department) => {
+    if (subDepartments.includes(dept)) {
+      setSubDepartments(subDepartments.filter((d) => d !== dept));
+    } else {
+      setSubDepartments([...subDepartments, dept]);
+    }
+  };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +47,9 @@ export default function RegisterPage() {
 
     try {
       const supabase = createClient();
+      // メイン班と重複するサブ班は除外
+      const filteredSubs = subDepartments.filter((d) => d !== mainDepartment);
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -45,7 +57,8 @@ export default function RegisterPage() {
           data: {
             full_name: fullName,
             student_id: studentId.trim() || null,
-            department: department,
+            department: mainDepartment,
+            sub_departments: filteredSubs,
           },
         },
       });
@@ -58,11 +71,9 @@ export default function RegisterPage() {
 
       // サインアップ後の処理
       if (data.session) {
-        // メール確認不要設定、または自動ログイン完了の場合
         router.push('/');
         router.refresh();
       } else {
-        // メール確認が必要な場合
         setSuccessMsg(
           '登録確認メールを送信しました。メール内の確認リンクをクリックして本登録を完了してください。'
         );
@@ -79,8 +90,12 @@ export default function RegisterPage() {
       <div className="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-8 shadow-2xl my-8">
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-rose-600/20 text-rose-500 border border-rose-500/30 mb-2">
-            <Flag className="w-7 h-7" />
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl overflow-hidden border border-slate-700 bg-black shadow-lg mb-2">
+            <img
+              src="/logo.jpg"
+              alt="KAIT Racing Logo"
+              className="w-full h-full object-contain p-1"
+            />
           </div>
           <h1 className="text-2xl font-black tracking-wider text-white">
             KAIT Racing
@@ -137,11 +152,16 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-              所属班 <span className="text-rose-400">*</span>
+              メイン所属班 <span className="text-rose-400">*</span>
             </label>
             <select
-              value={department}
-              onChange={(e) => setDepartment(e.target.value as Department)}
+              value={mainDepartment}
+              onChange={(e) => {
+                const newMain = e.target.value as Department;
+                setMainDepartment(newMain);
+                // サブ班から新しいメイン班を除外
+                setSubDepartments(subDepartments.filter((d) => d !== newMain));
+              }}
               className="w-full px-4 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition"
             >
               {(Object.keys(DEPARTMENT_LABELS) as Department[]).map((dept) => (
@@ -150,6 +170,48 @@ export default function RegisterPage() {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                兼班・サブ所属班 <span className="text-slate-500 font-normal">（兼任している場合・複数可）</span>
+              </label>
+              {subDepartments.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSubDepartments([])}
+                  className="text-[11px] text-slate-400 hover:text-rose-400"
+                >
+                  クリア
+                </button>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-2 p-3 bg-slate-900/60 border border-slate-700/80 rounded-xl">
+              {(Object.keys(DEPARTMENT_LABELS) as Department[])
+                .filter((dept) => dept !== mainDepartment)
+                .map((dept) => {
+                  const isChecked = subDepartments.includes(dept);
+                  return (
+                    <label
+                      key={dept}
+                      className={`flex items-center gap-2 p-2 rounded-lg text-xs cursor-pointer transition border ${
+                        isChecked
+                          ? 'bg-rose-950/40 border-rose-500/50 text-white font-medium'
+                          : 'bg-slate-800/60 border-slate-700/60 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => handleToggleSubDepartment(dept)}
+                        className="rounded border-slate-700 text-rose-600 focus:ring-rose-500 bg-slate-900 w-3.5 h-3.5"
+                      />
+                      <span>{DEPARTMENT_LABELS[dept]}</span>
+                    </label>
+                  );
+                })}
+            </div>
           </div>
 
           <div>

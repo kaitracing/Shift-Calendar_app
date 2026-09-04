@@ -32,6 +32,7 @@ export default async function DashboardPage() {
     full_name: string;
     student_id: string | null;
     department: 'mechanical' | 'electrical' | 'aerodynamics_cooling' | 'management' | 'other';
+    sub_departments?: ('mechanical' | 'electrical' | 'aerodynamics_cooling' | 'management' | 'other')[];
     role: 'admin' | 'manager' | 'member';
     is_banned: boolean;
   } | null;
@@ -77,6 +78,11 @@ export default async function DashboardPage() {
             </h1>
             <p className="text-sm text-slate-300 mt-2">
               所属班: <span className="font-semibold text-white">{profile ? DEPARTMENT_LABELS[profile.department] : '未設定'}</span>
+              {profile?.sub_departments && profile.sub_departments.length > 0 && (
+                <span className="text-slate-400 text-xs ml-1">
+                  (兼: {profile.sub_departments.map((d) => DEPARTMENT_LABELS[d]).join(', ')})
+                </span>
+              )}
               {profile?.student_id && ` (${profile.student_id})`}
               {' ｜ '}権限: <span className="font-semibold text-white">{profile ? ROLE_LABELS[profile.role] : 'Member'}</span>
             </p>
