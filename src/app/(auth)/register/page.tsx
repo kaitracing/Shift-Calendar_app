@@ -94,6 +94,9 @@ export default function RegisterPage() {
             <img
               src="/logo.jpg"
               alt="KAIT Racing Logo"
+              width={80}
+              height={80}
+              style={{ maxWidth: '80px', maxHeight: '80px' }}
               className="w-full h-full object-contain p-1"
             />
           </div>

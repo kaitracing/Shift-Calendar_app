@@ -82,6 +82,9 @@ export default function Navbar({ user, profile }: NavbarProps) {
                 <img
                   src="/logo.jpg"
                   alt="KAIT Racing"
+                  width={44}
+                  height={44}
+                  style={{ maxWidth: '44px', maxHeight: '44px' }}
                   className="w-full h-full object-contain"
                 />
               </div>
