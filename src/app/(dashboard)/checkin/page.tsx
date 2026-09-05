@@ -396,7 +396,7 @@ export default function CheckinPage() {
           {/* Checkout Button */}
           <div className="mt-8 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-slate-400">
-              作業がすべて完了したら、下のボタンを押して作業終了（退勤）を記録してください。
+              【片付けを含めて】作業がすべて完了したら、下のボタンを押して作業終了（退勤）を記録してください。5Sを徹底しましょう。
             </p>
             <button
               onClick={handleCheckout}

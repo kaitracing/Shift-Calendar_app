@@ -47,8 +47,10 @@ export default async function DashboardLayout({
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
         {children}
       </main>
-      <footer className="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
-        &copy; {new Date().getFullYear()} KAIT Racing (Kanagawa Institute of Technology Formula Project). All rights reserved.
+      <footer className="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500 space-y-1">
+        <p>&copy; {new Date().getFullYear()} KAIT Racing (Kanagawa Institute of Technology Formula EV Project). All rights reserved.</p>
+        <p>Developer: Yulu3_Gemini 3.8 Flash</p>
+        <p>ver1.0.0 (2026/09/05)</p>
       </footer>
     </div>
   );

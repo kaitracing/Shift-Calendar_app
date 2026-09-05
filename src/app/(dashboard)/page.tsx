@@ -71,7 +71,7 @@ export default async function DashboardPage() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-600/20 text-rose-400 text-xs font-semibold mb-3 border border-rose-500/30">
               <Flag className="w-3.5 h-3.5" />
-              <span>KAIT Racing Formula Project</span>
+              <span>KAIT Racing Formula EV Project</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
               ようこそ、{profile?.full_name || '部員'} さん！
@@ -154,7 +154,7 @@ export default async function DashboardPage() {
               GPS位置情報チェックイン
             </h2>
             <p className="text-sm text-slate-400 leading-relaxed mb-3">
-              現場（ガレージ・部室）に到着したら打刻。GPS判定で150m以内の場合に出勤が完了します。
+              現場に到着したら打刻。GPS判定で数十m以内でないと出勤判定不可能。
             </p>
             {activeCheckin ? (
               <div className="p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-xl text-xs text-emerald-300 flex items-center gap-2">
